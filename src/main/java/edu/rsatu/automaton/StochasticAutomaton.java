@@ -1,4 +1,4 @@
-package org.example;
+package edu.rsatu.automaton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,21 +11,7 @@ public class StochasticAutomaton {
 
     private final List<List<Double>> theoreticalStochasticStates;
 
-    public static void main(String[] args) {
-
-        double[] stochasticState = {1./3, 1./3, 1./3};
-
-        double[][] jumpMatrix = {
-                {0.5, 0.25, 0.25},
-                {0.5, 0, 0.5},
-                {2./3, 1./3, 0},
-        };
-
-        StochasticAutomaton stochasticAutomaton = new StochasticAutomaton(jumpMatrix, stochasticState);
-//        System.out.println(stochasticAutomaton.getEmpiricalStochasticStates());
-//        System.out.println("----------------------------");
-//        System.out.println(stochasticAutomaton.getTheoreticalStochasticStates());
-    }
+    private final List<Integer> states;
 
     public StochasticAutomaton(double[][] jumpMatrix, double[] firstStochasticState) {
         if (jumpMatrix.length == 0) throw new IllegalArgumentException();
@@ -34,6 +20,7 @@ public class StochasticAutomaton {
 
         empiricalStochasticStates = new ArrayList<>();
         theoreticalStochasticStates = new ArrayList<>();
+        states = new ArrayList<>();
 
         modeling(jumpMatrix, firstStochasticState);
     }
@@ -44,6 +31,10 @@ public class StochasticAutomaton {
 
     public List<List<Double>> getTheoreticalStochasticStates() {
         return theoreticalStochasticStates;
+    }
+
+    public List<Integer> getStates() {
+        return states;
     }
 
     private void modeling(double[][] jumpMatrix, double[] firstStochasticState) {
@@ -60,6 +51,7 @@ public class StochasticAutomaton {
 
             curEmpiricalStochasticState = getNewEmpiricalStochasticState(stateJumpNumbers, step);
 
+            states.add(currentState);
             empiricalStochasticStates.add(Arrays.stream(curEmpiricalStochasticState).boxed().collect(Collectors.toList()));
             theoreticalStochasticStates.add(Arrays.stream(curTheoreticalStochasticState).boxed().collect(Collectors.toList()));
 
@@ -75,7 +67,7 @@ public class StochasticAutomaton {
     }
 
     private boolean isStochasticStatesEqual(List<Double> stochasticState1, List<Double> stochasticState2) {
-        System.out.println("Empirical: " + stochasticState1 + ", theoretical: " + stochasticState2);
+//        System.out.println("Empirical: " + stochasticState1 + ", theoretical: " + stochasticState2);
 
         for (int index = 0; index < stochasticState1.size(); ++index) {
             if (Math.abs(stochasticState1.get(index) - stochasticState2.get(index)) > 0.01) {
@@ -92,6 +84,8 @@ public class StochasticAutomaton {
         double intervalBound = .0;
 
         int index = 0;
+
+//        System.out.println("stochasticState.length: " + stochasticState.length);
 
         for (; index < stochasticState.length; ++index) {
             intervalBound += stochasticState[index];
