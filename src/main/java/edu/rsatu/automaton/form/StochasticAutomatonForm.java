@@ -62,7 +62,7 @@ public class StochasticAutomatonForm {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setMinimumSize(new Dimension(560, 765));
         mainFrame.setVisible(true);
-        mainFrame.setResizable(false);
+//        mainFrame.setResizable(false);
         mainFrame.setLocationRelativeTo(null);
     }
 
@@ -148,6 +148,7 @@ public class StochasticAutomatonForm {
                 empiricalStochasticStates.size() != theoreticalStochasticStates.size()) throw new IllegalArgumentException();
 
         DefaultTableModel model = (DefaultTableModel) outputTable.getModel();
+        model.setRowCount(0);
 
         for (int index = 0; index < empiricalStochasticStates.size(); ++index) {
             model.addRow(new Object[]{
