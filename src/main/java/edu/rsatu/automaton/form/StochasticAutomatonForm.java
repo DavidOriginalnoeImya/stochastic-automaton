@@ -5,14 +5,10 @@ import edu.rsatu.automaton.StochasticAutomaton;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.List;
 
@@ -23,12 +19,14 @@ public class StochasticAutomatonForm {
     private JPanel mainPanel;
     private JTextArea jmpMatrixArea;
     private JButton calcButton;
+    private JTextField iterationNumInput;
 
     private double[][] jumpMatrix;
 
     public StochasticAutomatonForm() {
         jmpMatrLoadButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new File(".\\samples"));
             int result = fileChooser.showOpenDialog(mainPanel);
             if (result == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
@@ -40,7 +38,9 @@ public class StochasticAutomatonForm {
 
         calcButton.addActionListener(e -> {
             StochasticAutomaton stochasticAutomaton = new StochasticAutomaton(
-                    jumpMatrix, getStochasticState(fstStochasticStateInput.getText())
+                    jumpMatrix,
+                    getStochasticState(fstStochasticStateInput.getText()),
+                    Integer.parseInt(iterationNumInput.getText())
             );
 
             fillOutputTable(
@@ -164,7 +164,7 @@ public class StochasticAutomatonForm {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (Double element: list) {
-            stringBuilder.append(String.format("%.2f ", element));
+            stringBuilder.append(String.format("%.3f ", element));
         }
 
         return stringBuilder.toString();

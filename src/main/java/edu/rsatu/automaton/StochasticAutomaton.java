@@ -13,7 +13,7 @@ public class StochasticAutomaton {
 
     private final List<Integer> states;
 
-    public StochasticAutomaton(double[][] jumpMatrix, double[] firstStochasticState) {
+    public StochasticAutomaton(double[][] jumpMatrix, double[] firstStochasticState, int iterationNum) {
         if (jumpMatrix.length == 0) throw new IllegalArgumentException();
         if (jumpMatrix.length != firstStochasticState.length) throw new IllegalArgumentException();
         if (jumpMatrix[0].length != jumpMatrix.length) throw new IllegalArgumentException();
@@ -22,7 +22,7 @@ public class StochasticAutomaton {
         theoreticalStochasticStates = new ArrayList<>();
         states = new ArrayList<>();
 
-        modeling(jumpMatrix, firstStochasticState);
+        modeling(jumpMatrix, firstStochasticState, iterationNum);
     }
 
     public List<List<Double>> getEmpiricalStochasticStates() {
@@ -37,7 +37,7 @@ public class StochasticAutomaton {
         return states;
     }
 
-    private void modeling(double[][] jumpMatrix, double[] firstStochasticState) {
+    private void modeling(double[][] jumpMatrix, double[] firstStochasticState, int iterationNum) {
         int currentState = getNewState(firstStochasticState);
 
         double[] curTheoreticalStochasticState = firstStochasticState.clone(), curEmpiricalStochasticState;
@@ -60,10 +60,11 @@ public class StochasticAutomaton {
             curTheoreticalStochasticState = getNewTheoreticalStochasticState(jumpMatrix, curTheoreticalStochasticState);
 
             ++step;
-        } while (!isStochasticStatesEqual(
-                empiricalStochasticStates.get(empiricalStochasticStates.size() - 1),
-                theoreticalStochasticStates.get(theoreticalStochasticStates.size() - 1)
-        ));
+        } while (step <= iterationNum);
+//        } while (!isStochasticStatesEqual(
+//                empiricalStochasticStates.get(empiricalStochasticStates.size() - 1),
+//                theoreticalStochasticStates.get(theoreticalStochasticStates.size() - 1)
+//        ));
     }
 
     private boolean isStochasticStatesEqual(List<Double> stochasticState1, List<Double> stochasticState2) {
