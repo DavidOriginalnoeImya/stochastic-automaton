@@ -164,7 +164,7 @@ public class StochasticAutomatonForm {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (Double element: list) {
-            stringBuilder.append(String.format("%.3f ", element));
+            stringBuilder.append(String.format("%.4f ", element));
         }
 
         return stringBuilder.toString();

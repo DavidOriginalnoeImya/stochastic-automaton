@@ -40,31 +40,24 @@ public class StochasticAutomaton {
     private void modeling(double[][] jumpMatrix, double[] firstStochasticState, int iterationNum) {
         int currentState = getNewState(firstStochasticState);
 
+        System.out.println("Начальное состояние: " + currentState);
+
         double[] curTheoreticalStochasticState = firstStochasticState.clone(), curEmpiricalStochasticState;
 
         int[] stateJumpNumbers = new int[jumpMatrix.length];
 
-        int step = 1;
+        for (int step = 1; step <= iterationNum; ++step) {
+            currentState = getNewState(jumpMatrix[currentState]);
 
-        do {
             ++stateJumpNumbers[currentState];
 
             curEmpiricalStochasticState = getNewEmpiricalStochasticState(stateJumpNumbers, step);
+            curTheoreticalStochasticState = getNewTheoreticalStochasticState(jumpMatrix, curTheoreticalStochasticState);
 
             states.add(currentState);
             empiricalStochasticStates.add(Arrays.stream(curEmpiricalStochasticState).boxed().collect(Collectors.toList()));
             theoreticalStochasticStates.add(Arrays.stream(curTheoreticalStochasticState).boxed().collect(Collectors.toList()));
-
-            currentState = getNewState(jumpMatrix[currentState]);
-
-            curTheoreticalStochasticState = getNewTheoreticalStochasticState(jumpMatrix, curTheoreticalStochasticState);
-
-            ++step;
-        } while (step <= iterationNum);
-//        } while (!isStochasticStatesEqual(
-//                empiricalStochasticStates.get(empiricalStochasticStates.size() - 1),
-//                theoreticalStochasticStates.get(theoreticalStochasticStates.size() - 1)
-//        ));
+        }
     }
 
     private boolean isStochasticStatesEqual(List<Double> stochasticState1, List<Double> stochasticState2) {
