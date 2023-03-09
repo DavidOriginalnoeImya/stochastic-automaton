@@ -152,7 +152,7 @@ public class StochasticAutomatonForm {
 
         for (int index = 0; index < empiricalStochasticStates.size(); ++index) {
             model.addRow(new Object[]{
-                    index, "Z" + states.get(index),
+                    index, states.get(index),
                     formatDoubleList(empiricalStochasticStates.get(index)),
                     formatDoubleList(theoreticalStochasticStates.get(index))
                 }
