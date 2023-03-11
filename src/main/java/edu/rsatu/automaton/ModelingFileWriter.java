@@ -14,7 +14,7 @@ public class ModelingFileWriter {
             for (int index = 0; index < empiricalStochasticStates.size(); ++index) {
                 fileWriter
                         .append(String.valueOf(index))
-                        .append("\tZ").append(String.valueOf(states.get(index)))
+                        .append("\t").append(String.valueOf(states.get(index)))
                         .append("\t").append(formatDoubleList(empiricalStochasticStates.get(index)))
                         .append("\t").append(formatDoubleList(theoreticalStochasticStates.get(index)))
                         .append("\n");
@@ -29,7 +29,7 @@ public class ModelingFileWriter {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (Double element: list) {
-            stringBuilder.append(String.format("%.2f ", element));
+            stringBuilder.append(String.format("%.4f ", element));
         }
 
         return stringBuilder.toString();
